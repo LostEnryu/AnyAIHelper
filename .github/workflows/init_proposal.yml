@@ -10,26 +10,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. リポジトリをチェックアウト
+      # 1. リポジトリをチェックアウト(ai_helper)
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: ai_helper
+          path: ai_helper_branch
 
-      # 2. Pythonセットアップ
+      # 2. イシューが投稿されたブランチをチェックアウト
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        with:
+          path: current_branch
+
+      # 3. Pythonセットアップ
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
 
-      # 3. Python依存関係インストール
+      # 4. Python依存関係インストール
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f ai_helper/requirements.txt ]; then pip install -r ai_helper/requirements.txt; fi
+          if [ -f ai_helper_branch/ai_helper/requirements.txt ]; then pip install -r ai_helper_branch/ai_helper/requirements.txt; fi
 
-      # 4. Pythonスクリプトでフォルダ作成・プロンプト生成・コミットまで実行
+      # 5. Pythonスクリプトでフォルダ作成・プロンプト生成・コミットまで実行
       - name: Run init prompt generator
         run: |
-          python ai_helper/scripts/init_prompt_generator.py \
+          python ai_helper_branch/ai_helper/scripts/init_prompt_generator.py \
             --issue-number ${{ github.event.issue.number }} \
             --actor "${{ github.actor }}" \
             --repo "${{ github.repository }}"
