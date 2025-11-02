@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 質問・雑談用スレッド
+    url: https://github.com/${{ github.repository }}/discussions
+    about: 開発に関する質問・雑談はこちらへ
