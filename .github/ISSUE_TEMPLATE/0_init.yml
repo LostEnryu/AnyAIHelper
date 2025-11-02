@@ -28,7 +28,7 @@ body:
       options:
         - Draft
         - Prepare
-      default: Draft
+      default: 0
 
   - type: textarea
     id: overview
