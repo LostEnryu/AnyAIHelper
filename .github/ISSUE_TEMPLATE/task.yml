@@ -1,0 +1,53 @@
+name: 🧩 開発タスク
+description: 開発・設計・運用に関する一般タスクを登録します。
+title: "[Task] "
+labels: ["task"]
+assignees: ["${{ github.actor }}"]
+# projects:
+#   - vars.PROJECT_NAME
+projects: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🧩 開発タスクフォーム
+        実装・設計・検証・ドキュメント作成など、通常のタスクはこちらに登録します。
+
+  - type: input
+    id: summary
+    attributes:
+      label: 概要
+      description: タスクの目的を短くまとめてください。
+      placeholder: 例）認証APIのトークンリフレッシュ機能を実装
+
+  - type: textarea
+    id: detail
+    attributes:
+      label: 詳細内容
+      description: 実装方針・補足情報を記入してください。
+
+  - type: input
+    id: milestone
+    attributes:
+      label: 関連マイルストーン
+      placeholder: "例）M1: 認証・認可基盤構築"
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: 分類
+      options:
+        - Backend
+        - Frontend
+        - Infrastructure
+        - AI Logic
+        - Documentation
+        - Other
+
+  - type: textarea
+    id: criteria
+    attributes:
+      label: 完了条件
+      description: このタスクが完了とみなせる状態を明記してください。
+      placeholder: 例）PRマージ済み、テスト通過、レビュー完了
