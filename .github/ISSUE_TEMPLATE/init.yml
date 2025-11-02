@@ -1,0 +1,49 @@
+name: 🚀 プロジェクト初期化 [Init]
+description: プロジェクトを立ち上げるための初期設定イシューを作成します。
+title: "[Init] "
+labels: ["init"]
+assignees: ["${{ github.actor }}"]
+# projects:
+#   - vars.PROJECT_NAME
+projects: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🚀 プロジェクト初期化フォーム
+        このIssueは新しいプロジェクトを立ち上げるための初期手順を記録します。  
+        Step に応じて進行度を指定してください。  
+        - **Draft:** ドキュメント生成の準備段階  
+        - **Prepare:** ドキュメント確定・マイルストーン初期化段階
+
+  - type: dropdown
+    id: step
+    attributes:
+      label: Step
+      options:
+        - Draft
+        - Prepare
+      description: "現在のフェーズを選択ください（例：Draft または Prepare）"
+      placeholder: Draft
+
+  - type: textarea
+    id: overview
+    attributes:
+      label: プロジェクト概要（Draft時のみ）
+      description: どんなシステムを作りたいか、どんな技術を使いたいかを簡単に記入してください。
+      placeholder: 例）FastAPI + Reactで小規模タスク管理アプリを構築
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: 想定環境・利用技術（Draft時のみ）
+      description: 使用予定の言語、フレームワーク、インフラなどを記入してください。
+      placeholder: 例）Python, FastAPI, SQLite, Docker, GitHub Actions
+
+  - type: textarea
+    id: note
+    attributes:
+      label: 備考
+      description: 特記事項があれば記載してください。
+      placeholder: 例）既存テンプレートを流用予定
