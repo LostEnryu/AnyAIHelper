@@ -9,30 +9,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. リポジトリをチェックアウト
+      # 1. リポジトリをチェックアウト(ai_helper)
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          ref: ai_helper
+          path: ai_helper_branch
 
-      # 2. Python セットアップ
+      # 2. イシューが投稿されたブランチをチェックアウト
+      - name: Checkout current branch
+        uses: actions/checkout@v3
+        with:
+          path: current_branch
+
+      # 3. Python セットアップ
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      # 3. 依存モジュールインストール
+      # 4. 依存モジュールインストール
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f ai_helper/requirements.txt ]; then
-            pip install -r ai_helper/requirements.txt
+          if [ -f ai_helper_branch/ai_helper/requirements.txt ]; then
+            pip install -r ai_helper_branch/ai_helper/requirements.txt
           fi
 
-      # 4. task_prompt_generator.py 実行
+      # 5. task_prompt_generator.py 実行
       - name: Generate task prompt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python ai_helper/scripts/task_prompt_generator.py \
+          python ai_helper_branch/ai_helper/scripts/task_prompt_generator.py \
             --issue-number "${{ github.event.issue.number }}" \
             --actor "${{ github.actor }}" \
             --repo "${{ github.repository }}"
