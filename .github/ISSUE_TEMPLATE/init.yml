@@ -20,12 +20,15 @@ body:
   - type: dropdown
     id: step
     attributes:
-      label: Step
+      label: Step（現在のフェーズ）
+      description: |
+        現在のフェーズを選択してください。  
+        - **Draft**: 構想段階  
+        - **Prepare**: 準備・要件整理段階
       options:
         - Draft
         - Prepare
-      description: "現在のフェーズを選択ください（例：Draft または Prepare）"
-      placeholder: Draft
+      default: Draft
 
   - type: textarea
     id: overview
