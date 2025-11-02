@@ -1,0 +1,38 @@
+name: Task Proposal Prompt Generator
+
+on:
+  issues:
+    types: [opened, edited]
+
+jobs:
+  generate_task_prompt:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Python セットアップ
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      # 3. 依存モジュールインストール
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f ai_helper/requirements.txt ]; then
+            pip install -r ai_helper/requirements.txt
+          fi
+
+      # 4. task_prompt_generator.py 実行
+      - name: Generate task prompt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python ai_helper/scripts/task_prompt_generator.py \
+            --issue-number "${{ github.event.issue.number }}" \
+            --actor "${{ github.actor }}" \
+            --repo "${{ github.repository }}"
