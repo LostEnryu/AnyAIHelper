@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   generate_task_prompt:
@@ -81,3 +82,13 @@ jobs:
           python ai_helper/scripts/task_prompt_generator.py \
             --issue-number "${{ github.event.issue.number }}" \
             --actor "${{ github.actor }}"
+
+      # 8. コメントを投稿
+      - name: Add comment on issue
+        run: |
+          python ai_helper/scripts/comment_on_issue.py \
+            --issue-number "${{ github.event.issue.number }}" \
+            --type task
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
