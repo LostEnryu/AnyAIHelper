@@ -7,7 +7,7 @@ on:
 
 permissions:
   contents: write
-  issues: read
+  issues: write
 
 jobs:
   generate_proposals:
@@ -76,3 +76,14 @@ jobs:
             --issue-number ${{ github.event.issue.number }} \
             --actor "${{ github.actor }}" \
             --repo "${{ github.repository }}"
+
+      # 7. コメントを投稿
+      - name: Add comment on issue
+        run: |
+          python ai_helper/scripts/comment_on_issue.py \
+            --issue-number "${{ github.event.issue.number }}" \
+            --type init \
+            --range "00_プロジェクト概要_プロンプト.txt" "11_リスク管理_プロンプト.txt"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
