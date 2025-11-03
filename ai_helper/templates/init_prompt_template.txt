@@ -1,0 +1,20 @@
+# プロンプト生成テンプレート例（init_prompt_template.txt）
+# ドキュメント名: {{DOC_NAME}}
+# 出力先: {{DOC_PATH}}
+# Issue番号: {{ISSUE_NUMBER}}
+# 作成者: {{ACTOR}}
+
+{% if INCLUDE_ISSUE_BODY %}
+Issueタイトル:
+{{ISSUE_TITLE}}
+
+Issue本文:
+{{ISSUE_BODY}}
+{% endif %}
+
+テンプレート内容:
+{{TEMPLATE_CONTENT}}
+
+# 出力形式:
+# - Markdown
+# - 保存先: {{DOC_PATH}}
