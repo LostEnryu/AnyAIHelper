@@ -100,6 +100,23 @@ ai_helper/
 - GitHub Actions によって自動でファイルが生成・コミットされます。  
 - 生成されたファイルを確認したい場合は、`git worktree` を利用して開発ブランチと並行表示できます。
 
+#### メインリポジトリをmainにする
+- git worktreeを使う場合は、まずプロジェクトルート配下にgit cloneしてきてmainに名前を変更するのがおすすめです。
+
+```bash
+# 1. テンプレートリポジトリをクローン
+mkdir <プロジェクト名>
+cd <プロジェクト名>
+git clone https://github.com/ユーザー名/リポジトリ名.git
+
+# 2. mainディレクトリとして構成
+mv <リポジトリ名> main
+cd main
+```
+
+#### リモートブランチのai_helperをローカルに展開
+- `[Init]` イシューを作成するとai_helperがリモートに自動作成される。
+
 ```bash
 # ai_helperブランチを別ディレクトリに展開
 git fetch origin ai_helper
@@ -108,7 +125,7 @@ git worktree add ../ai_helper_view ai_helper
 # main（開発）とai_helper（AI補助）を同時に閲覧
 # ./                → mainブランチ（開発用）
 # ../ai_helper_view → ai_helperブランチ（AI自動生成用）
-````
+```
 
 ---
 
