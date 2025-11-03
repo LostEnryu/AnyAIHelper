@@ -78,7 +78,7 @@ try:
     subprocess.run(["git", "config", "user.name", ACTOR], check=True)
     subprocess.run(["git", "config", "user.email", f"{ACTOR}@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", str(FEATURE_PROMPT_DIR)], check=True)
-    subprocess.run(["git", "commit", "-m", f"[自動] Prepare Step 用 feature プロンプト生成 Issue #{ISSUE_NUMBER}"], check=True)
+    subprocess.run(["git", "commit", "-m", f"[auto] Prepare Step 用 feature プロンプト生成 Issue #{ISSUE_NUMBER}"], check=True)
     subprocess.run(["git", "push"], check=True)
 except subprocess.CalledProcessError as e:
     print(f"Gitコマンド実行に失敗: {e}")
