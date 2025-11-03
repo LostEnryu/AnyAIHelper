@@ -45,8 +45,19 @@ jobs:
         with:
           python-version: "3.11"
 
-      # 5. 依存モジュールインストール
+      # 5. Stepのチェック
+      - name: Extract Step value
+        id: extract
+        run: |
+          cd ai_helper_branch
+          echo "${{ github.event.issue.body }}" > issue_body.txt
+          STEP=$(python ai_helper/scripts/check_init_issue_step.py --issue-body-file issue_body.txt)
+          echo "step=$STEP" >> $GITHUB_OUTPUT
+          cd ..
+
+      # 6. 依存モジュールインストール
       - name: Install dependencies
+        if: ${{ steps.extract.outputs.step == 'Prepare' }}
         env:
           REQ_FILE: ai_helper_branch/ai_helper/requirements.txt
         run: |
@@ -57,8 +68,9 @@ jobs:
             echo "No requiremetns.txt found, skipping install"
           fi
 
-      # 6. task_prompt_generator.py 実行
+      # 7. task_prompt_generator.py 実行
       - name: Generate task prompt
+        if: ${{ steps.extract.outputs.step == 'Prepare' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
