@@ -3,6 +3,7 @@ name: Task Proposal Prompt Generator
 on:
   issues:
     types: [opened, edited]
+  workflow_dispatch:
 
 jobs:
   generate_task_prompt:
