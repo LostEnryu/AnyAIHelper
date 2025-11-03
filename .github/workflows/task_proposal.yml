@@ -65,5 +65,4 @@ jobs:
           cd ai_helper_branch
           python ai_helper/scripts/task_prompt_generator.py \
             --issue-number "${{ github.event.issue.number }}" \
-            --actor "${{ github.actor }}" \
-            --repo "${{ github.repository }}"
+            --actor "${{ github.actor }}"
