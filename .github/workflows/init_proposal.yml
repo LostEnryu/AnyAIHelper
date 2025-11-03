@@ -4,24 +4,38 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  contents: write
+  issues: read
+
 jobs:
   generate_proposals:
-    if: ${{ github.event.issue.title == '[Init] ' }}
+    if: startsWith(github.event.issue.title, '[Init]')
     runs-on: ubuntu-latest
 
     steps:
-      # 1. リポジトリをチェックアウト(ai_helper)
+      # 0. Gitを用意
+      - name: Prepare git environment
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      # 1. ai_helperブランチがあるかどうかチェック
+      - name: Ensure ai_helper branch exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! git ls-remote --exit-code origin ai_helper; then
+            gh api repos/${{ github.repository }}/git/refs \
+              -X POST -f ref="refs/heads/ai_helper" -f sha=$(git rev-parse origin/main)
+          fi
+
+      # 2. リポジトリをチェックアウト(ai_helper)
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ai_helper
           path: ai_helper_branch
-
-      # 2. イシューが投稿されたブランチをチェックアウト
-      - name: Checkout current branch
-        uses: actions/checkout@v3
-        with:
-          path: current_branch
 
       # 3. Pythonセットアップ
       - name: Set up Python
@@ -31,14 +45,21 @@ jobs:
 
       # 4. Python依存関係インストール
       - name: Install dependencies
+        env:
+          REQ_FILE: ai_helper_branch/ai_helper/requirements.txt
         run: |
           python -m pip install --upgrade pip
-          if [ -f ai_helper_branch/ai_helper/requirements.txt ]; then pip install -r ai_helper_branch/ai_helper/requirements.txt; fi
+          if [ -f "$REQ_FILE" ] ; then
+            pip install -r "$REQ_FILE"
+          else
+            echo "No requiremetns.txt found, skipping install"
+          fi
 
       # 5. Pythonスクリプトでフォルダ作成・プロンプト生成・コミットまで実行
       - name: Run init prompt generator
         run: |
-          python ai_helper_branch/ai_helper/scripts/init_prompt_generator.py \
+          cd ai_helper_branch/ai_helper
+          python scripts/init_prompt_generator.py \
             --issue-number ${{ github.event.issue.number }} \
             --actor "${{ github.actor }}" \
             --repo "${{ github.repository }}"
