@@ -58,8 +58,8 @@ jobs:
       # 5. Pythonスクリプトでフォルダ作成・プロンプト生成・コミットまで実行
       - name: Run init prompt generator
         run: |
-          cd ai_helper_branch/ai_helper
-          python scripts/init_prompt_generator.py \
+          cd ai_helper_branch
+          python ai_helper/scripts/init_prompt_generator.py \
             --issue-number ${{ github.event.issue.number }} \
             --actor "${{ github.actor }}" \
             --repo "${{ github.repository }}"
