@@ -44,8 +44,19 @@ jobs:
         with:
           python-version: '3.11'
 
-      # 4. Python依存関係インストール
+      # 4. Stepのチェック
+      - name: Extract Step value
+        id: extract
+        run: |
+          cd ai_helper_branch
+          echo "${{ github.event.issue.body }}" > issue_body.txt
+          STEP=$(python ai_helper/scripts/check_init_issue_step.py --issue-body-file issue_body.txt)
+          echo "step=$STEP" >> $GITHUB_OUTPUT
+          cd ..
+
+      # 5. Python依存関係インストール
       - name: Install dependencies
+        if: ${{ steps.extract.outputs.step == 'Draft' }}
         env:
           REQ_FILE: ai_helper_branch/ai_helper/requirements.txt
         run: |
@@ -56,9 +67,10 @@ jobs:
             echo "No requiremetns.txt found, skipping install"
           fi
 
-      # 5. Pythonスクリプトでフォルダ作成・プロンプト生成・コミットまで実行
+      # 6. Pythonスクリプトでフォルダ作成・プロンプト生成・コミットまで実行
       - name: Run init prompt generator
-        run: |
+        if: ${{ steps.extract.outputs.step == 'Draft' }}
+        run: |          
           cd ai_helper_branch
           python ai_helper/scripts/init_prompt_generator.py \
             --issue-number ${{ github.event.issue.number }} \
