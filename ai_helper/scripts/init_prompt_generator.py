@@ -23,11 +23,13 @@ REPO = args.repo
 # GitHub APIでIssue情報取得
 # =========================
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-if not GITHUB_TOKEN:
-    print("Error: GITHUB_TOKEN が設定されていません")
-    sys.exit(1)
+# 公開リポジトリでもトークンを設定した方が制限が緩い
+if GITHUB_TOKEN:
+    g = Github(GITHUB_TOKEN)
+else:
+    g = Github()
+    print('警告: GITHUB_TOKENが設定されていません。公開リポジトリのみアクセス可能です。')
 
-g = Github(GITHUB_TOKEN)
 try:
     repository = g.get_repo(REPO)
     issue = repository.get_issue(number=ISSUE_NUMBER)
@@ -121,7 +123,7 @@ try:
     subprocess.run(["git", "config", "user.name", ACTOR], check=True)
     subprocess.run(["git", "config", "user.email", f"{ACTOR}@users.noreply.github.com"], check=True)
     subprocess.run(["git", "add", str(PROJECT_INIT_DIR)], check=True)
-    subprocess.run(["git", "commit", "-m", f"[自動] Init Issue #{ISSUE_NUMBER} 用AIプロンプト追加"], check=True)
+    subprocess.run(["git", "commit", "-m", f"[auto] Init Issue #{ISSUE_NUMBER} 用AIプロンプト追加"], check=True)
     subprocess.run(["git", "push"], check=True)
 except subprocess.CalledProcessError as e:
     print(f"Gitコマンド実行に失敗: {e}")
