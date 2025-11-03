@@ -1,0 +1,15 @@
+### Step（現在のフェーズ）
+
+Draft
+
+### プロジェクト概要（Draft時のみ）
+
+FastAPIとReactで簡単なTODO管理アプリを作成。サーバーはlocalhostで十分。
+
+### 想定環境・利用技術（Draft時のみ）
+
+Python, FastAPI, SQLite, React
+
+### 備考
+
+デモ用プロジェクト
