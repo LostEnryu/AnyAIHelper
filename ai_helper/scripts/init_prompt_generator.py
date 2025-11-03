@@ -60,12 +60,12 @@ doc_templates = [
     ("01_プロジェクト概要.txt", "docs/プロジェクト概要.md", True),  # Draft Issue 内容を含める
     ("02_要件定義.txt", "docs/要件定義.md", False),
     ("03_システム構成.txt", "docs/システム構成.md", False),
-    ("04_認証認可設計.txt", "docs/認証認可設計.md", False),
+    ("04_認証・認可設計.txt", "docs/認証認可設計.md", False),
     ("05_API設計.txt", "docs/API設計.md", False),
     ("06_データベース設計.txt", "docs/データベース設計.md", False),
     ("07_UIUX設計.txt", "docs/UIUX設計.md", False),
     ("08_インフラ構成.txt", "docs/インフラ構成.md", False),
-    ("09_運用保守.txt", "docs/運用保守.md", False),
+    ("09_運用・保守設計.txt", "docs/運用保守.md", False),
     ("10_テスト計画.txt", "docs/テスト計画.md", False),
     ("11_リスク管理.txt", "docs/リスク管理.md", False),
 ]
