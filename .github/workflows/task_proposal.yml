@@ -9,39 +9,60 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. リポジトリをチェックアウト(ai_helper)
+      # 0. Gitを用意
+      - name: Prepare git environment
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          
+      # 1. ai_helperブランチがあるかどうかチェック
+      - name: Ensure ai_helper branch exists
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! git ls-remote --exit-code origin ai_helper; then
+            gh api repos/${{ github.repository }}/git/refs \
+              -X POST -f ref="refs/heads/ai_helper" -f sha=$(git rev-parse origin/main)
+          fi
+
+      # 2. リポジトリをチェックアウト(ai_helper)
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ai_helper
           path: ai_helper_branch
 
-      # 2. イシューが投稿されたブランチをチェックアウト
+      # 3. イシューが投稿されたブランチをチェックアウト
       - name: Checkout current branch
         uses: actions/checkout@v3
         with:
           path: current_branch
 
-      # 3. Python セットアップ
+      # 4. Python セットアップ
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.11"
 
-      # 4. 依存モジュールインストール
+      # 5. 依存モジュールインストール
       - name: Install dependencies
+        env:
+          REQ_FILE: ai_helper_branch/ai_helper/requirements.txt
         run: |
           python -m pip install --upgrade pip
-          if [ -f ai_helper_branch/ai_helper/requirements.txt ]; then
-            pip install -r ai_helper_branch/ai_helper/requirements.txt
+          if [ -f "$REQ_FILE" ]; then
+            pip install -r "$REQ_FILE"
+          else
+            echo "No requiremetns.txt found, skipping install"
           fi
 
-      # 5. task_prompt_generator.py 実行
+      # 6. task_prompt_generator.py 実行
       - name: Generate task prompt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python ai_helper_branch/ai_helper/scripts/task_prompt_generator.py \
+          cd ai_helper_branch/ai_helper
+          python scripts/task_prompt_generator.py \
             --issue-number "${{ github.event.issue.number }}" \
             --actor "${{ github.actor }}" \
             --repo "${{ github.repository }}"
