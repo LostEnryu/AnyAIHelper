@@ -61,8 +61,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd ai_helper_branch/ai_helper
-          python scripts/task_prompt_generator.py \
+          cd ai_helper_branch
+          python ai_helper/scripts/task_prompt_generator.py \
             --issue-number "${{ github.event.issue.number }}" \
             --actor "${{ github.actor }}" \
             --repo "${{ github.repository }}"
