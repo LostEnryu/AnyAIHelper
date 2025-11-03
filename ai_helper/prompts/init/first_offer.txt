@@ -1,6 +1,6 @@
 # 自動生成AIプロンプト（初期マイルストーン・タスク生成用）
-# 出力先: ai_helper\prompts\init\first_offer.txt
-# Issue番号: 2
+# 出力先: ai_helper/prompts/init/first_offer.txt
+# Issue番号: 5
 # 作成者: LostEnryu
 
 以下の既存ドキュメントを参考に、プロジェクトの初期マイルストーンとタスク案を YAML 形式で作成してください。
